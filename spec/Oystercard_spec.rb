@@ -39,16 +39,21 @@ describe Oystercard do
   end
 
   it 'expects in_journey to be true after touch_in' do
-    card = Oystercard.new
+    card = Oystercard.new(10)
     card.touch_in
     expect(card.in_journey?).to eq true
   end
 
   it "expects in_journey to be false after touch_out" do
-    card = Oystercard.new
+    card = Oystercard.new(12)
     card.touch_in
     card.touch_out
     expect(card.in_journey?).to eq false
+  end
+
+  it "expects error to be raised when trying to touch_in with less than £1" do
+    card = Oystercard.new
+    expect { card.touch_in }.to raise_error "Need to have at least £#{Oystercard::MINIMUM_AMOUNT}"
   end
 
 end

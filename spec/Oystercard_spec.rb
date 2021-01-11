@@ -29,9 +29,26 @@ describe Oystercard do
     end
   end
 
-  it 'deducts a specified amount from the balance' do 
+  it 'deducts a specified amount from the balance' do
     card = Oystercard.new(10)
     expect(card.deduct(5)).to eq 5
+  end
+
+  it 'expect in_journey? to be false' do
+    expect(subject).not_to be_in_journey
+  end
+
+  it 'expects in_journey to be true after touch_in' do
+    card = Oystercard.new
+    card.touch_in
+    expect(card.in_journey?).to eq true
+  end
+
+  it "expects in_journey to be false after touch_out" do
+    card = Oystercard.new
+    card.touch_in
+    card.touch_out
+    expect(card.in_journey?).to eq false
   end
 
 end

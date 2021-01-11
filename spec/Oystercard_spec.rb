@@ -29,4 +29,9 @@ describe Oystercard do
     end
   end
 
+  it 'deducts a specified amount from the balance' do 
+    card = Oystercard.new(10)
+    expect(card.deduct(5)).to eq 5
+  end
+
 end

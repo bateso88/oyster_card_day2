@@ -7,4 +7,19 @@ describe Oystercard do
   it 'setting balance of card to 0' do
     expect(Oystercard.new(0).balance).to eq 0
   end
+
+  it 'tests the default value of a card is zero' do
+    expect(Oystercard.new.balance).to eq 0
+  end
+
+  it 'responds to top_up' do
+    expect(subject).to respond_to :top_up
+  end
+
+  it 'top_up increases balance by value' do
+    card = Oystercard.new
+    card.top_up(10)
+    expect(card.balance).to eq 10
+  end
+  
 end

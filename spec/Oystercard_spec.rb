@@ -1,4 +1,5 @@
 require 'Oystercard'
+
 describe Oystercard do
   it 'responds to balance method' do
     expect(Oystercard.new(0)).to respond_to :balance
@@ -29,10 +30,10 @@ describe Oystercard do
     end
   end
 
-  it 'deducts a specified amount from the balance' do
-    card = Oystercard.new(10)
-    expect(card.deduct(5)).to eq 5
-  end
+  #it 'deducts a specified amount from the balance' do
+  #  card = Oystercard.new(10)
+  #  expect(card.deduct(5)).to eq 5
+  #end
 
   it 'expect in_journey? to be false' do
     expect(subject).not_to be_in_journey
@@ -56,4 +57,9 @@ describe Oystercard do
     expect { card.touch_in }.to raise_error "Need to have at least £#{Oystercard::MINIMUM_AMOUNT}"
   end
 
+  it 'expects balance to be deducted after touch_out' do
+    card = Oystercard.new(10)
+    card.touch_in
+    expect {card.touch_out}.to change{card.balance}.by(-Oystercard::MINIMUM_AMOUNT)
+  end
 end

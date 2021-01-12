@@ -9,7 +9,7 @@ class Journey
   end
 
   def current?
-    true
+    exit_station == nil
   end
 
 end

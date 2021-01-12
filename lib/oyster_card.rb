@@ -1,8 +1,7 @@
 require_relative 'journey.rb'
 
 class OysterCard
-  attr_reader :balance, :entry_station, :list_of_journeys
-  attr_accessor :current_journey
+  attr_reader :balance, :list_of_journeys, :current_journey
 
   BALANCE_LIMIT = 90
   MINIMUM_AMOUNT = 1
@@ -19,23 +18,19 @@ class OysterCard
   end
 
   def in_journey?
-    if current_journey == nil
-      false
-    else
-      @current_journey.current?
-    end
+    @current_journey != nil
   end
 
   def touch_in(entry_station)
     fail "Need to have at least £#{MINIMUM_AMOUNT}." if balance < MINIMUM_AMOUNT
     @current_journey = Journey.new(entry_station)
-    @current_journey.entry_station
+    current_journey.entry_station
   end
 
   def touch_out(station)
     deduct(MINIMUM_AMOUNT)
-    @current_journey.exit_station = station
-    @list_of_journeys << @current_journey
+    current_journey.exit_station = station
+    @list_of_journeys << current_journey
     @current_journey = nil
   end
 

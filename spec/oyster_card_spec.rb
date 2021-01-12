@@ -1,6 +1,8 @@
 require 'oyster_card'
 
 describe OysterCard do
+
+  let(:station1) { $station1 = "Highgate" }
   context 'balance' do
     it 'should respond to :balance' do
       expect(OysterCard.new(0)).to respond_to :balance
@@ -39,26 +41,39 @@ describe OysterCard do
 
     it 'in_journey? should be true after touch_in' do
       card = OysterCard.new(10)
-      card.touch_in
+      card.touch_in(station1)
       expect(card).to be_in_journey
     end
 
     it 'in_journey? should be false after touch_out' do
       card = OysterCard.new(12)
-      card.touch_in
+      card.touch_in(station1)
       card.touch_out
       expect(card).not_to be_in_journey
     end
 
     it 'error should be raised when trying to touch_in with less than MINIMUM_AMOUNT' do
       card = OysterCard.new
-      expect { card.touch_in }.to raise_error "Need to have at least £#{OysterCard::MINIMUM_AMOUNT}."
+      expect { card.touch_in(station1) }.to raise_error "Need to have at least £#{OysterCard::MINIMUM_AMOUNT}."
     end
 
     it 'balance should be deducted by MINIMUM_AMOUNT after touch_out' do
       card = OysterCard.new(10)
-      card.touch_in
+      card.touch_in(station1)
       expect { card.touch_out }.to change{ card.balance }.by(-OysterCard::MINIMUM_AMOUNT)
+    end
+  end
+
+  context 'entry_station' do
+    it 'should return previous station' do
+      card = OysterCard.new(10)
+      card.touch_in(station1)
+      expect(card.entry_station).to eq "Highgate"
+    end
+    it 'should return previous station' do
+      card = OysterCard.new(10)
+      card.touch_in(station1)
+      expect(card.touch_out).to eq nil
     end
   end
 end

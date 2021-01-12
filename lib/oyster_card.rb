@@ -16,13 +16,12 @@ class OysterCard
   end
 
   def in_journey?
-    entry_station != nil
+    !!entry_station
   end
 
   def touch_in(station)
     fail "Need to have at least £#{MINIMUM_AMOUNT}." if balance < MINIMUM_AMOUNT
     @entry_station = station
-
   end
 
   def touch_out(station)

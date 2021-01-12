@@ -40,14 +40,14 @@ describe OysterCard do
     it 'in_journey? should be true after touch_in' do
       card = OysterCard.new(10)
       card.touch_in
-      expect(card.in_journey?).to eq true
+      expect(card).to be_in_journey
     end
 
     it 'in_journey? should be false after touch_out' do
       card = OysterCard.new(12)
       card.touch_in
       card.touch_out
-      expect(card.in_journey?).to eq false
+      expect(card).not_to be_in_journey
     end
 
     it 'error should be raised when trying to touch_in with less than MINIMUM_AMOUNT' do
@@ -58,7 +58,7 @@ describe OysterCard do
     it 'balance should be deducted by MINIMUM_AMOUNT after touch_out' do
       card = OysterCard.new(10)
       card.touch_in
-      expect {card.touch_out}.to change{card.balance}.by(-OysterCard::MINIMUM_AMOUNT)
+      expect { card.touch_out }.to change { card.balance }.by(-OysterCard::MINIMUM_AMOUNT)
     end
   end
 end

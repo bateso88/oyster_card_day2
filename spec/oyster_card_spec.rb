@@ -66,13 +66,13 @@ describe OysterCard do
     end
   end
 
-  context 'entry_station' do
+  context 'journeys' do
     subject {described_class.new(10)}
-    it 'should return previous station' do
+    it 'should return entry_station if not touched out yet' do
       subject.touch_in(entry_station)
-      expect(subject.entry_station).to eq entry_station
+      expect(subject.current_journey.entry_station).to eq entry_station
     end
-    it 'should return previous station' do
+    it 'should return nil if journey complete' do
       subject.touch_in(entry_station)
       expect(subject.touch_out(exit_station)).to eq nil
     end
@@ -82,8 +82,8 @@ describe OysterCard do
     it "adds a journey when journey complete" do
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      arra = [{:entry_station => entry_station, :exit_station => exit_station}]
-      expect(subject.list_of_journeys).to eq arra
+      #arra = [{:entry_station => entry_station, :exit_station => exit_station}]
+      expect(subject.list_of_journeys[-1]).to be_a Journey
     end
   end
 end

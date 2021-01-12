@@ -58,7 +58,7 @@ describe OysterCard do
     it 'balance should be deducted by MINIMUM_AMOUNT after touch_out' do
       card = OysterCard.new(10)
       card.touch_in
-      expect { card.touch_out }.to change { card.balance }.by(-OysterCard::MINIMUM_AMOUNT)
+      expect { card.touch_out }.to change{ card.balance }.by(-OysterCard::MINIMUM_AMOUNT)
     end
   end
 end

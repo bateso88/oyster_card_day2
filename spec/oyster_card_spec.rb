@@ -41,13 +41,11 @@ describe OysterCard do
     end
 
     it 'in_journey? should be true after touch_in' do
-      #card = OysterCard.new(10)
       subject.touch_in(entry_station)
       expect(subject).to be_in_journey
     end
 
     it 'in_journey? should be false after touch_out' do
-      #card = OysterCard.new(12)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
       expect(subject).not_to be_in_journey
@@ -55,14 +53,13 @@ describe OysterCard do
 
     it 'error should be raised when trying to touch_in with less than MINIMUM_AMOUNT' do
       card = OysterCard.new
-      erro = "Need to have at least £#{OysterCard::MINIMUM_AMOUNT}."
+      erro = "Need to have at least £#{Journey::MINIMUM_AMOUNT}."
       expect { card.touch_in(entry_station) }.to raise_error erro
     end
 
     it 'balance should be deducted by MINIMUM_AMOUNT after touch_out' do
-      #card = OysterCard.new(10)
       subject.touch_in(entry_station)
-      expect { subject.touch_out(exit_station) }.to change{ subject.balance }.by(-OysterCard::MINIMUM_AMOUNT)
+      expect { subject.touch_out(exit_station) }.to change{ subject.balance }.by(-Journey::MINIMUM_AMOUNT)
     end
   end
 
@@ -79,11 +76,14 @@ describe OysterCard do
     it 'should have an empty history by default' do
       expect(subject.list_of_journeys).to be_empty
     end
-    it "adds a journey when journey complete" do
+    it 'adds a journey when journey complete' do
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      #arra = [{:entry_station => entry_station, :exit_station => exit_station}]
       expect(subject.list_of_journeys[-1]).to be_a Journey
+    end
+    it "should charge penalty amount when user hasn't tapped out" do 
+      subject.touch_in(entry_station)
+      expect { subject.touch_in(entry_station) }.to change{ subject.balance }.by(-Journey::PENALTY_FARE)
     end
   end
 end

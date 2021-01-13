@@ -12,7 +12,7 @@ describe Journey do
     expect(subject.exit_station).to eq nil
   end
 
-  it "should return exit_station when exit_station called at once journey complete" do
+  it "should return exit_station when exit_station called once journey complete" do
     subject.exit_station = "Highgate"
     expect(subject.exit_station).to eq "Highgate"
   end
@@ -26,14 +26,19 @@ describe Journey do
     expect(subject).not_to be_current
   end
 
-  it "should charge PENALTY_FARE if exit_station does not exist" do 
+  it "should charge PENALTY_FARE if never tapped out" do 
     subject.exit_station = "Penalty fare"
     expect(subject.fare).to eq Journey::PENALTY_FARE
   end
 
-  it "should charge MINIMUM_AMOUNT if exit_station exists" do 
+  it "should charge MINIMUM_AMOUNT if tapped out" do 
     subject.exit_station = "Highgate"
     expect(subject.fare).to eq Journey::MINIMUM_AMOUNT
+  end
+
+  it "should charge PENALTY_FARE if never tapped in" do 
+    journey = Journey.new("Penalty fare")
+    expect(journey.fare).to eq Journey::PENALTY_FARE
   end
 
 end

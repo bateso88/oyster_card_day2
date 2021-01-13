@@ -16,7 +16,7 @@ class Journey
   end
 
   def fare
-    if exit_station == "Penalty fare"
+    if exit_station == "Penalty fare" || entry_station == "Penalty fare"
       PENALTY_FARE
     else
       MINIMUM_AMOUNT

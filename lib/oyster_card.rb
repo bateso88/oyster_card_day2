@@ -17,12 +17,12 @@ class OysterCard
   end
 
   def in_journey?
-    current_journey != nil
+    !!current_journey 
   end
 
   def touch_in(station)
-    fail "Need to have at least £#{Journey::MINIMUM_AMOUNT}." if balance < Journey::MINIMUM_AMOUNT
     end_previous_journey_if_never_touched_out
+    fail "Need to have at least £#{Journey::MINIMUM_AMOUNT}." if balance < Journey::MINIMUM_AMOUNT
     start_new_journey(station)
   end
 
@@ -36,8 +36,13 @@ class OysterCard
   end
 
   def touch_out(station)
+    create_new_penalty_journey_if_never_touched_in
     current_journey.exit_station = station
     end_journey
+  end
+
+  def create_new_penalty_journey_if_never_touched_in
+    @current_journey = Journey.new("Penalty Fare") until in_journey? 
   end
 
   def end_journey
